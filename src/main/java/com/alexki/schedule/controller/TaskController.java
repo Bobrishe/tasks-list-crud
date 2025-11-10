@@ -62,7 +62,7 @@ public class TaskController {
         Task task = taskService.getTaskByListIdAndId(schedule_id, task_id);
         model.addAttribute("task", taskMapper.toDto(task));
 
-        return "task/single_task";
+        return "task/details";
     }
 
     @GetMapping("/edit/{task_id}")
