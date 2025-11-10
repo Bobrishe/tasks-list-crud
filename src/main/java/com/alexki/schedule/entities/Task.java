@@ -1,4 +1,4 @@
-package com.alexki.tasklist.entities;
+package com.alexki.schedule.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,7 @@ public class Task {
     private LocalDateTime updated;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_list_id")
-    private TaskList taskList;
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
 }

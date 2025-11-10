@@ -1,6 +1,6 @@
-package com.alexki.tasklist.repositories;
+package com.alexki.schedule.repositories;
 
-import com.alexki.tasklist.entities.Task;
+import com.alexki.schedule.entities.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, UUID> {
-    List<Task> findByTaskListId(UUID taskListId);
+    List<Task> findByScheduleId(UUID scheduleId);
 
-    Optional<Task> findByTaskListIdAndId(UUID taskListId, UUID Id);
+    Optional<Task> findByScheduleIdAndId(UUID scheduleId, UUID Id);
 }

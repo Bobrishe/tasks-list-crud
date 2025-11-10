@@ -1,4 +1,4 @@
-package com.alexki.tasklist.entities;
+package com.alexki.schedule.entities;
 
 public enum TaskStatus {
     OPEN, CLOSED

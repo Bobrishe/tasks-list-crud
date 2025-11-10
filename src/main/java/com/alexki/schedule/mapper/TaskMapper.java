@@ -1,7 +1,7 @@
-package com.alexki.tasklist.mapper;
+package com.alexki.schedule.mapper;
 
-import com.alexki.tasklist.dto.TaskDto;
-import com.alexki.tasklist.entities.Task;
+import com.alexki.schedule.dto.TaskDto;
+import com.alexki.schedule.entities.Task;
 import org.springframework.stereotype.Component;
 
 @Component

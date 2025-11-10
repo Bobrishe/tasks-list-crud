@@ -1,7 +1,7 @@
-package com.alexki.tasklist.dto;
+package com.alexki.schedule.dto;
 
-import com.alexki.tasklist.entities.TaskPriority;
-import com.alexki.tasklist.entities.TaskStatus;
+import com.alexki.schedule.entities.TaskPriority;
+import com.alexki.schedule.entities.TaskStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

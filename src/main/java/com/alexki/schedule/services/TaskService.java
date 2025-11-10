@@ -1,11 +1,11 @@
-package com.alexki.tasklist.services;
+package com.alexki.schedule.services;
 
-import com.alexki.tasklist.entities.Task;
-import com.alexki.tasklist.entities.TaskList;
-import com.alexki.tasklist.entities.TaskPriority;
-import com.alexki.tasklist.entities.TaskStatus;
-import com.alexki.tasklist.repositories.TaskListRepository;
-import com.alexki.tasklist.repositories.TaskRepository;
+import com.alexki.schedule.entities.Schedule;
+import com.alexki.schedule.entities.Task;
+import com.alexki.schedule.entities.TaskPriority;
+import com.alexki.schedule.entities.TaskStatus;
+import com.alexki.schedule.repositories.ScheduleRepository;
+import com.alexki.schedule.repositories.TaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,26 +17,26 @@ import java.util.List;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final TaskListRepository taskListRepository;
+    private final ScheduleRepository scheduleRepository;
 
-    private final String ID_IS_NULL = "Task list ID can't be NULL";
+    private final String ID_IS_NULL = "Schedule ID can't be NULL";
 
-    public TaskService(TaskRepository taskRepository, TaskListRepository taskListRepository) {
+    public TaskService(TaskRepository taskRepository, ScheduleRepository scheduleRepository) {
         this.taskRepository = taskRepository;
-        this.taskListRepository = taskListRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
 
-    public List<Task> getTaskListByListId(UUID id) {
-        return taskRepository.findByTaskListId(id);
+    public List<Task> getScheduleById(UUID id) {
+        return taskRepository.findByScheduleId(id);
     }
 
-    public Optional<Task> getTaskByListIdAndId(UUID taskListId, UUID id) {
-        return taskRepository.findByTaskListIdAndId(taskListId, id);
+    public Task getTaskByListIdAndId(UUID scheduleId, UUID id) {
+        return taskRepository.findByScheduleIdAndId(scheduleId, id).orElseThrow(() -> new IllegalArgumentException("Not found"));
     }
 
     @Transactional
-    public Task createNewTask(UUID taskListId, Task task) {
+    public Task createNewTask(UUID scheduleId, Task task) {
         if (task.getId() != null) {
             throw new IllegalArgumentException("Task already has an ID!");
         }
@@ -46,8 +46,8 @@ public class TaskService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        TaskList taskList = taskListRepository.findById(taskListId).orElseThrow(
-                () -> new IllegalArgumentException("Task list not found")
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalArgumentException("Schedule not found")
         );
 
         TaskPriority priority = Optional.ofNullable(task.getPriority())
@@ -63,13 +63,13 @@ public class TaskService {
                         priority,
                         now,
                         now,
-                        taskList
+                        schedule
                 )
         );
     }
 
     @Transactional
-    public Task updateTask(UUID taskListId, UUID id, Task task) {
+    public Task updateTask(UUID scheduleId, UUID id, Task task) {
         if (task.getId() == null) {
             throw new IllegalArgumentException(ID_IS_NULL);
         }
@@ -77,7 +77,7 @@ public class TaskService {
             throw new IllegalArgumentException("Attempting to change list ID");
         }
 
-        Task existingTask = taskRepository.findByTaskListIdAndId(taskListId, id)
+        Task existingTask = taskRepository.findByScheduleIdAndId(scheduleId, id)
                 .orElseThrow(() -> new IllegalArgumentException("No task found!!!"));
 
         existingTask.setTitle(task.getTitle());
@@ -92,10 +92,13 @@ public class TaskService {
     }
 
     @Transactional
-    public void deleteTask(UUID taskListId, UUID taskId) {
-        Task task = taskRepository.findByTaskListIdAndId(taskListId, taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task or Task list not found!"));
+    public void deleteTask(UUID scheduleId, UUID taskId) {
+        Task task = taskRepository.findByScheduleIdAndId(scheduleId, taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Task or schedule not found!"));
+
+        task.getSchedule().getTasks().remove(task);
 
         taskRepository.delete(task);
+
     }
 }
