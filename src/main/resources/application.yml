@@ -4,8 +4,25 @@ spring:
     url: jdbc:postgresql://localhost:5430/postgres
     username: postgres
     password: postgrespass
+  application:
+    name: schedule
+  thymeleaf:
+    cache: false
 
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL:
+          DEBUG
+
+
+
