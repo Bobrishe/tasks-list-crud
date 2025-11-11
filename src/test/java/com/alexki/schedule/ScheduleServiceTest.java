@@ -51,9 +51,8 @@ public class ScheduleServiceTest {
 
         schedule.setId(java.util.UUID.randomUUID());
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            scheduleService.createSchedule(schedule);
-        });
+        assertThrows(IllegalArgumentException.class, () ->
+                scheduleService.createSchedule(schedule));
 
     }
 
@@ -65,21 +64,18 @@ public class ScheduleServiceTest {
         for (String invalidTitle : invalidTitles) {
             schedule.setTitle(invalidTitle);
 
-            assertThrows(IllegalArgumentException.class, () -> {
-                scheduleService.createSchedule(schedule);
-            });
+            assertThrows(IllegalArgumentException.class, () ->
+                    scheduleService.createSchedule(schedule)
+            );
         }
     }
 
     @Test
     public void shouldThrowWhenGetScheduleWithNullIdOrInvalidId() {
-        assertThrows(NullPointerException.class, () -> {
-            scheduleService.getSchedule(null);
-        });
+        assertThrows(NullPointerException.class, () -> scheduleService.getSchedule(null));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            scheduleService.getSchedule(java.util.UUID.randomUUID());
-        });
+        assertThrows(IllegalArgumentException.class, () ->
+                scheduleService.getSchedule(java.util.UUID.randomUUID()));
     }
 
     @Test
@@ -110,13 +106,11 @@ public class ScheduleServiceTest {
 
     @Test
     public void shouldThrowWhenGetScheduleTasksWithNullIdOrInvalidId() {
-        assertThrows(NullPointerException.class, () -> {
-            scheduleService.getScheduleTasksById(null);
-        });
+        assertThrows(NullPointerException.class, () ->
+                scheduleService.getScheduleTasksById(null));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            scheduleService.getScheduleTasksById(java.util.UUID.randomUUID());
-        });
+        assertThrows(IllegalArgumentException.class, () ->
+                scheduleService.getScheduleTasksById(java.util.UUID.randomUUID()));
     }
 
     @Test
@@ -130,9 +124,8 @@ public class ScheduleServiceTest {
 
     @Test
     public void shouldThrowWhenUpdateScheduleWithNullOrChangedId() {
-        assertThrows(NullPointerException.class, () -> {
-            scheduleService.updateSchedule(null, schedule);
-        });
+        assertThrows(NullPointerException.class, () ->
+                scheduleService.updateSchedule(null, schedule));
 
         assertThrows(IllegalArgumentException.class, () -> {
             schedule.setId(java.util.UUID.randomUUID());
@@ -146,9 +139,8 @@ public class ScheduleServiceTest {
         Schedule createdSchedule = scheduleService.createSchedule(schedule);
         scheduleService.deleteSchedule(createdSchedule.getId());
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            scheduleService.getSchedule(createdSchedule.getId());
-        });
+        assertThrows(IllegalArgumentException.class, () ->
+                scheduleService.getSchedule(createdSchedule.getId()));
     }
 
 }
