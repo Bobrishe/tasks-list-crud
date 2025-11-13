@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -24,11 +23,6 @@ public class TaskService {
     public TaskService(TaskRepository taskRepository, ScheduleRepository scheduleRepository) {
         this.taskRepository = taskRepository;
         this.scheduleRepository = scheduleRepository;
-    }
-
-
-    public List<Task> getScheduleById(UUID id) {
-        return taskRepository.findByScheduleId(id);
     }
 
     public Task getTaskByListIdAndId(UUID scheduleId, UUID id) {
