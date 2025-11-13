@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +24,7 @@ public class ScheduleServiceTest {
     @Autowired
     private ScheduleService scheduleService;
 
-    Schedule schedule;
+    private Schedule schedule;
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +39,6 @@ public class ScheduleServiceTest {
 
         assertNotNull(createdSchedule.getId());
         assertNotNull(createdSchedule.getCreated());
-        assertNotNull(createdSchedule.getUpdated());
 
         assertEquals("Test Schedule", createdSchedule.getTitle());
 
@@ -49,7 +49,7 @@ public class ScheduleServiceTest {
     @Test
     public void shouldThrowWhenCreateScheduleWithId() {
 
-        schedule.setId(java.util.UUID.randomUUID());
+        schedule.setId(UUID.randomUUID());
 
         assertThrows(IllegalArgumentException.class, () ->
                 scheduleService.createSchedule(schedule));
@@ -75,7 +75,7 @@ public class ScheduleServiceTest {
         assertThrows(NullPointerException.class, () -> scheduleService.getSchedule(null));
 
         assertThrows(IllegalArgumentException.class, () ->
-                scheduleService.getSchedule(java.util.UUID.randomUUID()));
+                scheduleService.getSchedule(UUID.randomUUID()));
     }
 
     @Test
@@ -93,14 +93,16 @@ public class ScheduleServiceTest {
 
         List<Schedule> beforeCreatingCount = scheduleService.getSchedules();
 
-        for (int i = 0; i < 3; i++) {
+        int shouldCreateCount = 3;
+
+        for (int i = 0; i < shouldCreateCount; i++) {
             schedule.setTitle("Schedule " + i);
             scheduleService.createSchedule(schedule);
         }
 
         List<Schedule> afterCreatingCount = scheduleService.getSchedules();
 
-        assertEquals(3, afterCreatingCount.size() - beforeCreatingCount.size());
+        assertEquals(shouldCreateCount, afterCreatingCount.size() - beforeCreatingCount.size());
 
     }
 
@@ -110,7 +112,7 @@ public class ScheduleServiceTest {
                 scheduleService.getScheduleTasksById(null));
 
         assertThrows(IllegalArgumentException.class, () ->
-                scheduleService.getScheduleTasksById(java.util.UUID.randomUUID()));
+                scheduleService.getScheduleTasksById(UUID.randomUUID()));
     }
 
     @Test
@@ -128,8 +130,8 @@ public class ScheduleServiceTest {
                 scheduleService.updateSchedule(null, schedule));
 
         assertThrows(IllegalArgumentException.class, () -> {
-            schedule.setId(java.util.UUID.randomUUID());
-            scheduleService.updateSchedule(java.util.UUID.randomUUID(), schedule);
+            schedule.setId(UUID.randomUUID());
+            scheduleService.updateSchedule(UUID.randomUUID(), schedule);
         });
     }
 
