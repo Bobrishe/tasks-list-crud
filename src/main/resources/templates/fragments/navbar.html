@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbar">
+    <div class="container">
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/schedule}">Schedules</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item"
+                    sec:authorize="not isAuthenticated()">
+                    <a class="btn btn-outline-light me-2" th:href="@{/login}">
+                        Login
+                    </a>
+                </li>
+
+                <li sec:authorize="isAuthenticated()">
+                        <a  class="btn btn-outline-secondary me-2" th:href="@{/logout}">
+                            Logout
+                        </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
